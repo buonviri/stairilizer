@@ -16,19 +16,23 @@ import os
 def FixFloatingPoint(oldstring):
     newstring = oldstring
     fix = {
-        '1.000000000000000000,': '1.0,' ,  # comma
-        '1.000000000000000000)': '1.0)' ,  # paren
-        '1.000000000000000000 ': '1.0 ' ,  # space
-
-        '0.000000000000000000,': '0.0,' ,  # comma
-        '0.000000000000000000)': '0.0)' ,  # paren
-        '0.000000000000000000 ': '0.0 ' ,  # space
-
-        '1000.000000000000000,': '1000.0,' ,  # comma
-        '1000.000000000000000)': '1000.0)' ,  # paren
-        '1000.000000000000000 ': '1000.0 ' ,  # space
+        """'Administrator'""":               """''""",
+        """'Managed by Terraform'""":        """''""",
+        """'SolidWorks 2017'""":             """''""",
+        """'SwSTEP 2.0'""":                  """''""",
     }
-
+    numberpairs = [
+        ['1.000000000000000000',    '1.0'    ],
+        ['1.0000000000000000000',   '1.0'    ],
+        ['0.000000000000000000',    '0.0'    ],
+        ['0.0000000000000000000',   '0.0'    ],
+        ['1000.000000000000000',    '1000.0' ],
+    ]
+    for numberpair in numberpairs:
+        fix[numberpair[0]+','] = numberpair[1]+','
+        fix[numberpair[0]+' '] = numberpair[1]+' '
+        fix[numberpair[0]+')'] = numberpair[1]+')'
+    # print(fix)
     for k in fix:
         newstring = newstring.replace(k, fix[k])
     return newstring
@@ -46,7 +50,7 @@ def AnalyzeFiles(exts, suffix, funcs):
                     pass  # skip this file since it's an output of this converter
                 else:
                     filelist.append([f, f[:-length] + formatted_suffix + ext])
-    print(filelist)
+    # print(filelist)
     for fpair in filelist:
         oldname = fpair[0]
         newname = fpair[1]
@@ -62,9 +66,9 @@ def AnalyzeFiles(exts, suffix, funcs):
 
 # --- Start of script ---
 
-AnalyzeFiles(['.STEP', '.step', '.stp'], 'strl', [FixFloatingPoint,])
+AnalyzeFiles(['.STEP', '.STP', '.step', '.stp'], 'strl', [FixFloatingPoint,])
 
 print()
-os.system('PAUSE')
+# os.system('PAUSE')
 
 #EOF

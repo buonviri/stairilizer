@@ -1,0 +1,5 @@
+# ignore test files
+*.step
+*.STEP
+*.stp
+*.STP
