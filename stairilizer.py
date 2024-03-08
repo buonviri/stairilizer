@@ -19,7 +19,7 @@ def SplitSTEP(oldstring):
     for s in newlist:
         strippedlist.append(s.strip())
     return ';\n'.join(strippedlist)  # return list joined back into string
-# End SplitSTEP
+# End Function
 
 
 def FixFloatingPoint(oldstring):
@@ -46,7 +46,7 @@ def FixFloatingPoint(oldstring):
     for k in fix:
         newstring = newstring.replace(k, fix[k])
     return newstring
-# End FixFloatingPoint
+# End Function
 
 
 def SortSTEP(oldstring):
@@ -70,7 +70,7 @@ def SortSTEP(oldstring):
         else:
             header.append(line)
     return '\n'.join(header + absr + mslb + clsh + lines)  # return list joined back into string
-# End SortSTEP
+# End Function
 
 
 def AnalyzeFiles(exts, suffix, funcs):
@@ -95,12 +95,12 @@ def AnalyzeFiles(exts, suffix, funcs):
                 newstring = func(newstring)
             with open(newname, 'w') as newfile:
                 newfile.write(newstring)
-# End AnalyzeFiles
+# End Function
 
 
 # --- Start of script ---
-
-AnalyzeFiles(['.STEP', '.STP', '.step', '.stp'], 'strl', [SplitSTEP,FixFloatingPoint,SortSTEP])
+# pass list of extensions, keyword to modify filenames, and list of functions to manipulate file contents
+AnalyzeFiles(['.STEP', '.STP', '.step', '.stp'], 'strl', [SplitSTEP, FixFloatingPoint, SortSTEP])
 
 # print()
 # os.system('PAUSE')
