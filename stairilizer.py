@@ -52,24 +52,59 @@ def FixFloatingPoint(oldstring):
 def SortSTEP(oldstring):
     newlist = oldstring.split('\n')  # split into list
     header = []
-    absr = []  # ADVANCED_BREP_SHAPE_REPRESENTATION
-    mslb = []  # MANIFOLD_SOLID_BREP
-    clsh = []  # CLOSED_SHELL
+    first = [  # list of items to be output first
+        ['APPLICATION_PROTOCOL_DEFINITION',[]],
+        ['APPLICATION_CONTEXT',[]],
+        ['DESIGN_CONTEXT',[]],
+        ['MECHANICAL_CONTEXT',[]],
+        ['ADVANCED_BREP_SHAPE_REPRESENTATION',[]],
+        ['MANIFOLD_SOLID_BREP',[]],
+        ['CLOSED_SHELL',[]],
+        ['ADVANCED_FACE',[]],
+        ['FACE_OUTER_BOUND',[]],
+        ['EDGE_LOOP',[]],
+        ['ORIENTED_EDGE',[]],
+        ['EDGE_CURVE',[]],
+        ['VERTEX_POINT',[]],
+        ['CARTESIAN_POINT',[]],
+        ['DIRECTION',[]],
+        # garbage:
+        ['CC_DESIGN_DATE_AND_TIME_ASSIGNMENT',[]],
+        ['CC_DESIGN_PERSON_AND_ORGANIZATION_ASSIGNMENT',[]],
+        ['CC_DESIGN_SECURITY_CLASSIFICATION',[]],
+        ['CALENDAR_DATE',[]],
+        ['DATE_TIME_ROLE',[]],
+        ['DATE_AND_TIME',[]],
+        ['LOCAL_TIME',[]],
+        ['PERSON_AND_ORGANIZATION',[]],
+        ['PERSON',[]],
+        ['ORGANIZATION',[]],
+        ['SECURITY_CLASSIFICATION_LEVEL',[]],
+        ['SECURITY_CLASSIFICATION',[]],
+        ['PRODUCT_RELATED_PRODUCT_CATEGORY',[]],
+        ['PRODUCT_DEFINITION_FORMATION_WITH_SPECIFIED_SOURCE',[]],
+        ['PRODUCT_DEFINITION_SHAPE',[]],
+        ['PRODUCT_DEFINITION',[]],
+        ['PRODUCT',[]],
+        ]
     lines = []
     foundpound = False
     for line in newlist:
-        if 'ADVANCED_BREP_SHAPE_REPRESENTATION' in line:
-            absr.append(line)
-        elif 'MANIFOLD_SOLID_BREP' in line:
-            mslb.append(line)
-        elif 'CLOSED_SHELL' in line:
-            clsh.append(line)
+        found_first = False  # line is not first by default
+        for i in range(len(first)):  # iterate over indices in first
+            if first[i][0] in line and found_first == False:  # if keyword is in line, skip if match already found
+                first[i][1].append(line)  # add line to that keyword's list
+                found_first = True
+        if found_first:
+            pass  # line already added elsewhere
         elif line.startswith('#') or foundpound == True:
             lines.append(line)
             foundpound = True
         else:
             header.append(line)
-    return '\n'.join(header + absr + mslb + clsh + lines)  # return list joined back into string
+    for linelist in first:  # iterate over first again
+        header = header + linelist[1]  # add list portion
+    return '\n'.join(header + [] + lines)  # return list joined back into string
 # End Function
 
 
